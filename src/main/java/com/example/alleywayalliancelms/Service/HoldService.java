@@ -73,7 +73,12 @@ public class HoldService {
             }
         } else {
             if (!checkoutService.checkIfUserAlreadyHaveAnotherCopyOfTheBook(patronAccountService.getAccountByEmail(patronEmail).getId(), hold.getCopyId())) {
-                hold.setId(holdRepository.getLastId() + 1);
+                if (holdRepository.getLastId() == null) {
+                    hold.setId(1L);
+                } else {
+                    hold.setId(holdRepository.getLastId() + 1);
+                }
+
                 createHold(hold, CopyId, patronEmail, endDate);
             } else return false;
         }
@@ -90,18 +95,12 @@ public class HoldService {
         ArrayList<Hold> filteredHoldList = new ArrayList<>();
         Date today = new Date();
 
-
         for (Hold el : holds) {
-            if (el.getEndTime().after(today)) {
-                if (checkoutService.findCheckoutByHold(el, el.getPatronId(), false) != null) {
-                    if (checkoutService.findCheckoutByHold(el, el.getPatronId(), false).getEndDate() == null) {
-                        filteredHoldList.add(el);
-                    }
-                }
+            if (el.getEndTime().after(today) && checkoutService.findCheckoutByHold(el, el.getPatronId(), false) != null
+                    && checkoutService.findCheckoutByHold(el, el.getPatronId(), false).getEndDate() == null) {
+                filteredHoldList.add(el);
             }
-
         }
-
         return filteredHoldList;
     }
 
@@ -111,14 +110,13 @@ public class HoldService {
 
         for (Hold el : holds) {
             if (today.after(el.getEndTime()) || checkoutService.findCheckoutByHold(el, el.getPatronId(), true) != null) {
-                log.info("holds get onto checkout: {}", el.getId());
                 filteredHoldList.add(el);
             }
         }
         return filteredHoldList;
     }
 
-    private void createHold(Hold hold, Long CopyId, String patronEmail, Date endDate) throws IllegalArgumentException{
+    private void createHold(Hold hold, Long CopyId, String patronEmail, Date endDate) throws IllegalArgumentException {
         BookCopy bookCopy = bookCopyRepository.findById(CopyId).get();
         PatronAccount patronAccount = patronAccountRepository.getPatronAccountByEmail(patronEmail);
 

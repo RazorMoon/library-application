@@ -19,6 +19,7 @@ import java.util.Set;
 @Table(name = "hold")
 public class Hold {
     @Id
+    @GeneratedValue(generator = "hold_hold_id_seq")
     @Column(name = "hold_id", nullable = false)
     private Long id;
 
