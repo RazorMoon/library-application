@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Alleyway Alliance Expired Holds</title>
+
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/navbar.css" rel="stylesheet">
+
+
+  <!-- Custom styles for this template -->
+  <link href="/css/navbar-static.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="/css/sidebars.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/}">Alleyway Alliance Library Management System</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" th:href="@{/}">Home</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" th:href="@{/catalog}">Catalog</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link active" sec:authorize="hasRole('USER')" aria-current="page" th:href="@{/hold}">Holds</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" sec:authorize="hasRole('ADMIN')"aria-current="page" th:href="@{/admin}">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" sec:authorize="hasRole('ADMIN')" aria-current="page" th:href="@{/checkout}">Checkouts</a>
+        </li>
+
+      </ul>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" th:if="'anonymousUser' == ${#authentication.name}"  th:href="@{/login}">Log in</a>
+        </li>
+        <li  class="nav-item" >
+          <a class="nav-link" th:href="@{'/account/'+ ${#authentication.name}}" th:text="${#authentication.name}">NAME</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" sec:authorize="isAuthenticated()" href="/logout">Log out</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main class="d-flex flex-nowrap">
+  <div class="flex-shrink-0 p-3 bg-white" style="width: 280px;">
+    <a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+      <svg class="bi pe-none me-2" width="30" height="24"><use xlink:href="#bootstrap"/></svg>
+      <span class="fs-5 fw-semibold">Holds Menu</span>
+    </a>
+    <ul class="list-unstyled ps-0">
+      <li class="mb-1">
+        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+          Holds
+        </button>
+        <div class="collapse show" id="home-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a th:href="@{/hold}" class="link-dark d-inline-flex text-decoration-none rounded">All</a></li>
+            <li><a th:href="@{/hold/active}" class="link-dark d-inline-flex text-decoration-none rounded">Active</a></li>
+            <li><a th:href="@{/hold/expired}" class="link-dark d-inline-flex text-decoration-none rounded">Expired</a></li>
+          </ul>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+  <div class="b-example-divider b-example-vr"></div>
+  <div class="container-fluid bg-light p-5 rounded">
+    <h1>My Expired Hold List</h1> <br>
+
+    <table  class="table table-striped table-bordered">
+      <tr>
+        <th>Hold ID</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Copy ID</th>
+        <th>Account ID</th>
+        <th>Copies</th>
+        <th>Accounts</th>
+      </tr>
+      <tr th:each="el : ${expiredHoldList}">
+        <td th:text="${el.id}"></td>
+        <td th:text="${el.startTime}"></td>
+        <td th:text="${el.endTime}"></td>
+        <td th:text="${el.copyId}"></td>
+        <td th:text="${el.patronId}"></td>
+        <td><div th:text="${copy.id}" th:each="copy : ${el.bookCopy}">
+
+        </div>
+        </td>
+        <td>
+          <div th:text="${account.email}" th:each="account : ${el.patronAccount}">
+
+          </div>
+        </td>
+
+      </tr>
+    </table>
+
+
+  </div>
+</main>
+
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/sidebars.js"></script>
+</body>
+</html>

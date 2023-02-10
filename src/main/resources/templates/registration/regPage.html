@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Alleyway Alliance Catalog</title>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/navbar.css" rel="stylesheet">
+
+
+
+    <!-- Custom styles for this template -->
+    <link href="/css/navbar-static.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/}">Alleyway Alliance Library Management System</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" th:href="@{/}">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/}">Catalog</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/login}">Log in</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+    <div class="bg-light p-5 rounded">
+        <h1>Registration</h1>
+
+        <form method="post" th:object="${userForm}">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <input type="email"  class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" th:field="*{email}">
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                <div style="color: red" class="form-text" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+                    E-mail
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" th:field="*{password}">
+                <div class="input-group-addon">
+                    <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                </div>
+                <div style="color: red" class="form-text" th:if="${#fields.hasErrors('password')}"th:errors="*{password}">
+                    Password Error
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword2" class="form-label">Password Confirm</label>
+                <input type="password" class="form-control" id="exampleInputPassword2" th:field="*{passwordConfirm}">
+                <div style="color: red" class="form-text" th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}">
+                    Password Confirm Error
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="FirstName" class="form-label">First Name</label>
+                <input class="form-control" id="FirstName" th:field="*{firstName}">
+                <div style="color: red" class="form-text" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">
+                    FirstName Error
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="SureName" class="form-label">Surename</label>
+                <input class="form-control" id="SureName" th:field="*{surename}">
+                <div style="color: red" class="form-text" th:if="${#fields.hasErrors('surename')}" th:errors="*{surename}">
+                    Surename Error
+                </div>
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+    </div>
+</main>
+
+
+<script src="/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

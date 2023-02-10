@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Alleyway Alliance Delete Book Copy</title>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/navbar.css" rel="stylesheet">
+
+
+
+    <!-- Custom styles for this template -->
+    <link href="/css/navbar-static.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/}">Alleyway Alliance Library Management System</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" th:href="@{/}">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" th:href="@{/catalog}">Catalog</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="hasRole('USER')"aria-current="page" th:href="@{/hold}">Holds</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" th:href="@{/admin}">Dashboard</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" th:href="@{/checkout}">Checkouts</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" th:if="'anonymousUser' == ${#authentication.name}"  th:href="@{/login}">Log in</a>
+                </li>
+                <li  class="nav-item" >
+                    <a class="nav-link" th:href="@{'/account/'+ ${#authentication.name}}" th:text="${#authentication.name}">NAME</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="isAuthenticated()" href="/logout">Log out</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+    <div class="bg-light p-5 rounded">
+        <h1>Book Copy Search</h1>
+
+        <form method="post" class="d-flex" role="search" >
+            <input type="number" id="bookCopyId" name="bookCopyId" class="form-control me-2" placeholder="Search Copy ID" aria-label="Search Book Copy">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+
+    </div>
+</main>
+
+
+<script src="/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
