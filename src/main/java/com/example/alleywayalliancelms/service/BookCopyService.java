@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Slf4j
@@ -28,6 +29,15 @@ public class BookCopyService {
         this.publisherRepository = publisherRepository;
     }
 
+    public BookCopy checkBookCopyIdForNull(Optional<BookCopy> bookCopyOptional) {
+        if (bookCopyOptional.isPresent()) {
+            return bookCopyOptional.get();
+        } else {
+            log.error("Book Copy is not found.");
+            throw new CopyNotFoundException();
+        }
+    }
+
     public List<BookCopy> getBookCopiesByBookId(Long bookId) {
         return bookCopyRepository.findBookCopiesByBookId(bookId);
     }
@@ -43,7 +53,7 @@ public class BookCopyService {
         bookCopyRepository.save(bookCopy);
     }
 
-    public void saveWithPublisher(BookCopy bookCopy, Publisher publisher)  {
+    public void saveWithPublisher(BookCopy bookCopy, Publisher publisher) {
         publisherRepository.save(publisher);
         bookCopy.setPublisher(publisher);
         bookCopy.setPublishId(publisher.getId());
@@ -51,19 +61,11 @@ public class BookCopyService {
     }
 
     public void deleteBookCopy(Long bookCopyId) {
-        try {
-            bookCopyRepository.delete(bookCopyRepository.findById(bookCopyId).get());
-        } catch (IllegalArgumentException e) {
-            log.error("Illegal argument exception at deleteBookCopy: " + e.getMessage());
-        }
+        bookCopyRepository.delete(checkBookCopyIdForNull(bookCopyRepository.findById(bookCopyId)));
     }
 
     public BookCopy getBookCopyById(Long bookCopyId) {
-        if (bookCopyRepository.findById(bookCopyId).isPresent()) {
-           return bookCopyRepository.findById(bookCopyId).get();
-        } else {
-            throw new CopyNotFoundException();
-        }
+        return checkBookCopyIdForNull(bookCopyRepository.findById(bookCopyId));
     }
 
 }

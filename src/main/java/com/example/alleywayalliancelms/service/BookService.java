@@ -1,6 +1,8 @@
 package com.example.alleywayalliancelms.service;
 
 import com.example.alleywayalliancelms.exception.BookNotFoundException;
+import com.example.alleywayalliancelms.exception.CategoryNotFoundException;
+import com.example.alleywayalliancelms.exception.GenreNotFoundException;
 import com.example.alleywayalliancelms.model.Author;
 import com.example.alleywayalliancelms.model.Book;
 import com.example.alleywayalliancelms.model.Category;
@@ -9,7 +11,6 @@ import com.example.alleywayalliancelms.repository.BookRepository;
 import com.example.alleywayalliancelms.repository.CategoryRepository;
 import com.example.alleywayalliancelms.repository.GenreRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -82,10 +83,12 @@ public class BookService {
             bookDb.setAuthors(null);
             bookDb.setBookCopies(null);
             bookDb.setWaitlistpatronAccounts(null);
+
             save(bookDb);
             bookRepository.delete(bookDb);
             return true;
-        } else return false;
+        } else
+            return false;
     }
 
     public Book getBookById(Long id) {
@@ -132,6 +135,7 @@ public class BookService {
             categoryRepository.save(category);
         } else {
             log.error("Given category is null.");
+            throw new CategoryNotFoundException();
         }
     }
 
@@ -140,6 +144,7 @@ public class BookService {
             genreRepository.save(genre);
         } else {
             log.error("Given genre is null.");
+            throw new GenreNotFoundException();
         }
     }
 

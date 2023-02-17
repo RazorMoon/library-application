@@ -3,16 +3,19 @@ package com.example.alleywayalliancelms.service;
 import com.example.alleywayalliancelms.model.Checkout;
 import com.example.alleywayalliancelms.model.Notification;
 import com.example.alleywayalliancelms.repository.NotificationRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @Service
 public class NotificationService {
 
@@ -35,14 +38,14 @@ public class NotificationService {
         return patronAccountService.getAccountByEmail(email).getId();
     }
 
-    public Notification addNotification(String patronId, Long bookCopyId, Date endDate) {
+    public void addNotification(String patronId, Long bookCopyId, LocalDateTime endDate) {
         Notification notification = new Notification();
 
         notification.setPatronId(patronId);
         notification.setType("Return book copy: " + bookCopyId);
         notification.setSentAt(endDate);
 
-        return notificationRepository.save(notification);
+        notificationRepository.save(notification);
     }
 
 
@@ -50,16 +53,18 @@ public class NotificationService {
         List<Notification> notifications = notificationRepository.findNotificationsByPatronId(patronId);
         List<Notification> sortedNotes = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
-        //Date today = new Date();
-        LocalDate today = LocalDate.now();
+        LocalDateTime today = LocalDateTime.now();
 
         for (Notification el : notifications) {
-            calendar.setTime(el.getSentAt());
+            calendar.setTime(java.sql.Timestamp.valueOf(el.getSentAt()));
             calendar.add(Calendar.HOUR, -72);
             Checkout checkout = checkoutService.findCheckoutByDateAndPatronId(el.getSentAt(), patronId);
 
-            if (today.isAfter(calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
-                    && today.isBefore(el.getSentAt().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
+            log.info("Checkout : {}", checkout);
+            log.info("isReturned : {}", checkout.getIsReturned());
+
+            if (today.isAfter(calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
+                    && today.isBefore(el.getSentAt())
                     && !checkout.getIsReturned()) {
                 sortedNotes.add(el);
             }

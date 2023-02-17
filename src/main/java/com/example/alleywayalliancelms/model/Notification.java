@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -21,7 +23,7 @@ public class Notification {
     private Long id;
 
     @Column(name = "sent_at")
-    private Date sentAt;
+    private LocalDateTime sentAt;
 
     @Column(name = "type")
     private String type;

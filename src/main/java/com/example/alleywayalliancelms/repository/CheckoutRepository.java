@@ -6,14 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 public interface CheckoutRepository extends JpaRepository<Checkout, Long> {
 
-    Checkout findCheckoutByBookId(Long copyBookId);
-
-    Checkout findCheckoutByBookIdAndEndDate(Long copyBookId, Date enddate);
+    Checkout findCheckoutByBookIdAndEndDate(Long copyBookId, LocalDate endDate);
 
     @Query(value = "SELECT count(*) FROM checkout WHERE book_copy_id = :copyId AND is_returned = false", nativeQuery = true)
     Long checkIfCopyIsAvailible(@Param("copyId") Long copyId);
@@ -23,9 +23,9 @@ public interface CheckoutRepository extends JpaRepository<Checkout, Long> {
 
     List<Checkout> findCheckoutByPatronAccountId(String accountId);
 
-    Checkout findCheckoutByIsReturnedAndPatronAccountIdAndStartDate(Boolean isReturned, String accountId, Date startDate);
+    Checkout findCheckoutByIsReturnedAndPatronAccountIdAndStartDate(Boolean isReturned, String accountId, LocalDateTime startDate);
 
-    Checkout findCheckoutByStartDateAndPatronAccountId(Date startDate, String accountId);
+    Checkout findCheckoutByStartDateAndPatronAccountId(LocalDateTime startDate, String accountId);
 
     List<Checkout> findCheckoutByIsReturnedAndPatronAccount(Boolean isReturned, PatronAccount patronAccount);
 

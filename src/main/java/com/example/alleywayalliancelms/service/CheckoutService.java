@@ -1,11 +1,14 @@
 package com.example.alleywayalliancelms.service;
 
+import com.example.alleywayalliancelms.exception.CheckoutNotFoundException;
 import com.example.alleywayalliancelms.model.*;
 import com.example.alleywayalliancelms.repository.CheckoutRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Slf4j
@@ -21,6 +24,7 @@ public class CheckoutService {
         this.checkoutRepository = checkoutRepository;
         this.bookCopyService = bookCopyService;
     }
+
 
     public List<Checkout> getAllCheckouts() {
         return checkoutRepository.findAll();
@@ -54,8 +58,13 @@ public class CheckoutService {
         return new HashSet<>(checkoutRepository.findCheckoutByIsReturnedAndPatronAccount(isReturned, patronAccount));
     }
 
-    public Checkout findCheckoutByDateAndPatronId(Date date, String accountId) {
-        return checkoutRepository.findCheckoutByStartDateAndPatronAccountId(date, accountId);
+    public Checkout findCheckoutByDateAndPatronId(LocalDateTime date, String accountId) {
+        if (checkoutRepository.findCheckoutByStartDateAndPatronAccountId(date, accountId) != null) {
+            return checkoutRepository.findCheckoutByStartDateAndPatronAccountId(date, accountId);
+        } else {
+            log.error("Checkout with given date : {} and account ID : {} is not found ", date, accountId);
+            throw new CheckoutNotFoundException("Checkout with given date and account ID, is not found.");
+        }
     }
 
     public void placeACheckout(Hold hold) {
@@ -73,7 +82,7 @@ public class CheckoutService {
 
     public void checkoutComplete(Long bookCopyId, Boolean isReturned) {
         Checkout checkout = checkoutRepository.findCheckoutByBookIdAndEndDate(bookCopyId, null);
-        Date date = new Date();
+        LocalDateTime date = LocalDateTime.now();
 
         if (checkout != null && checkout.getEndDate() == null) {
             checkout.setIsReturned(isReturned);

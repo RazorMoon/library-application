@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -48,11 +50,10 @@ public class HoldService {
     }
 
     public boolean saveHold(Hold hold, Long CopyId, String patronEmail) {
-        LocalDate date = LocalDate.now();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(java.sql.Date.valueOf(date));
-        calendar.add(Calendar.HOUR, 120);
-        Date endDate = calendar.getTime();
+        LocalDateTime date = LocalDateTime.now();
+
+        LocalDateTime endDate = date.plusDays(5);
+
         Hold holdFromDb = holdRepository.findFirstByEndTimeAndBookCopyIdDesc(hold.getCopyId());
 
 
@@ -87,10 +88,10 @@ public class HoldService {
 
     public List<Hold> getActiveHoldList(List<Hold> holds) {
         ArrayList<Hold> filteredHoldList = new ArrayList<>();
-        Date today = new Date();
+        LocalDateTime today = LocalDateTime.now();
 
         for (Hold el : holds) {
-            if (el.getEndTime().after(today) && checkoutService.findCheckoutByHold(el, el.getPatronId(), false) != null
+            if (el.getEndTime().isAfter(today) && checkoutService.findCheckoutByHold(el, el.getPatronId(), false) != null
                     && checkoutService.findCheckoutByHold(el, el.getPatronId(), false).getEndDate() == null) {
                 filteredHoldList.add(el);
             }
@@ -100,21 +101,22 @@ public class HoldService {
 
     public List<Hold> getExpiredHoldList(List<Hold> holds) {
         ArrayList<Hold> filteredHoldList = new ArrayList<>();
-        Date today = new Date();
+        LocalDateTime today = LocalDateTime.now();
 
         for (Hold el : holds) {
-            if (today.after(el.getEndTime()) || checkoutService.findCheckoutByHold(el, el.getPatronId(), true) != null) {
+            if (today.isAfter(el.getEndTime()) || checkoutService.findCheckoutByHold(el, el.getPatronId(), true) != null) {
                 filteredHoldList.add(el);
             }
         }
         return filteredHoldList;
     }
 
-    private void createHold(Hold hold, Long CopyId, String patronEmail, Date endDate) {
+    private void createHold(Hold hold, Long CopyId, String patronEmail, LocalDateTime endDate) {
         BookCopy bookCopy = bookCopyService.getBookCopyById(CopyId);
         PatronAccount patronAccount = patronAccountService.getAccountByEmail(patronEmail);
+        LocalDateTime now = LocalDateTime.now();
 
-        Date now = new Date();
+
         hold.setStartTime(now);
         hold.setEndTime(endDate);
 

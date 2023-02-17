@@ -1,7 +1,6 @@
 package com.example.alleywayalliancelms.exceptionHandler;
 
-import com.example.alleywayalliancelms.exception.AuthorNotFoundException;
-import com.example.alleywayalliancelms.exception.BookNotFoundException;
+import com.example.alleywayalliancelms.exception.*;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,7 +15,10 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = {BookNotFoundException.class, AuthorNotFoundException.class})
+    @ExceptionHandler(value = {BookNotFoundException.class, AuthorNotFoundException.class,
+                                                            CategoryNotFoundException.class,
+                                                            CheckoutNotFoundException.class,
+                                                            GenreNotFoundException.class})
     protected ResponseEntity<ExceptionResponse> handException(Exception ex) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(ex.getMessage(), LocalDateTime.now());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
