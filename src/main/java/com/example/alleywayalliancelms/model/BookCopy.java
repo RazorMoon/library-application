@@ -12,8 +12,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Getter
 @Setter
 @Entity

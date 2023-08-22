@@ -20,7 +20,7 @@ import java.util.Properties;
  * @see com.example.alleywayalliancelms.model.PatronAccount
  */
 
-public class MyGenerator extends SequenceStyleGenerator {
+public class SequenceGenerator extends SequenceStyleGenerator {
 
     public static final String VALUE_PREFIX_PARAMETER = "valuePrefix";
     public static final String VALUE_PREFIX_DEFAULT = "";

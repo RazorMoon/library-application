@@ -2,6 +2,7 @@ package com.example.alleywayalliancelms.controller;
 
 import com.example.alleywayalliancelms.model.PatronAccount;
 import com.example.alleywayalliancelms.service.PatronAccountService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,18 +23,13 @@ import javax.validation.Valid;
  *     <li><a href="file:../resources/templates/registration/regPage.html"> Patron Account Registration Page</a></li>
  * </ul>
  */
-
+@RequiredArgsConstructor
 @Slf4j
 @Controller
 @RequestMapping("/")
 public class RegistrationController {
 
     private final PatronAccountService patronAccountService;
-
-    @Autowired
-    public RegistrationController(PatronAccountService patronAccountService) {
-        this.patronAccountService = patronAccountService;
-    }
 
     @GetMapping("registration")
     public String showRegistration(Model model) {

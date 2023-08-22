@@ -2,6 +2,7 @@ package com.example.alleywayalliancelms.controller;
 
 import com.example.alleywayalliancelms.model.Checkout;
 import com.example.alleywayalliancelms.service.CheckoutService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,17 +12,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 
+@RequiredArgsConstructor
 @Slf4j
 @Controller
 @RequestMapping("/")
 public class CheckoutController {
 
     private final CheckoutService checkoutService;
-
-    @Autowired
-    public CheckoutController(CheckoutService checkoutService) {
-        this.checkoutService = checkoutService;
-    }
 
     @GetMapping("checkout")
     public String showCheckoutPage(Model model) {

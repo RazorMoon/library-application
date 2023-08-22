@@ -5,11 +5,8 @@ import com.example.alleywayalliancelms.model.Book;
 import com.example.alleywayalliancelms.model.PatronAccount;
 import com.example.alleywayalliancelms.model.Role;
 import com.example.alleywayalliancelms.repository.PatronAccountRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,6 +18,7 @@ import java.util.*;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class PatronAccountService implements UserDetailsService {
 
     private final PatronAccountRepository patronAccountRepository;
@@ -29,18 +27,8 @@ public class PatronAccountService implements UserDetailsService {
 
     private final CheckoutService checkoutService;
 
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    private  final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    public PatronAccountService(PatronAccountRepository patronAccountRepository,
-                                BookService bookService,
-                                CheckoutService checkoutService,
-                                BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.patronAccountRepository = patronAccountRepository;
-        this.bookService = bookService;
-        this.checkoutService = checkoutService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
