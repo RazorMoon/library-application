@@ -3,27 +3,20 @@ package com.example.alleywayalliancelms.service;
 import com.example.alleywayalliancelms.exception.CheckoutNotFoundException;
 import com.example.alleywayalliancelms.model.*;
 import com.example.alleywayalliancelms.repository.CheckoutRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class CheckoutService {
-
     private final CheckoutRepository checkoutRepository;
 
     private final BookCopyService bookCopyService;
-
-    @Autowired
-    public CheckoutService(CheckoutRepository checkoutRepository, BookCopyService bookCopyService) {
-        this.checkoutRepository = checkoutRepository;
-        this.bookCopyService = bookCopyService;
-    }
 
 
     public List<Checkout> getAllCheckouts() {

@@ -5,6 +5,7 @@ import com.example.alleywayalliancelms.model.BookCopy;
 import com.example.alleywayalliancelms.model.Hold;
 import com.example.alleywayalliancelms.model.Publisher;
 import com.example.alleywayalliancelms.service.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-
+@RequiredArgsConstructor
 @Slf4j
 @Controller
 @RequestMapping("/")
@@ -30,16 +31,6 @@ public class BookCopyController {
 
     private final BookService bookService;
 
-    @Autowired
-    public BookCopyController(BookCopyService bookCopyService,
-                              HoldService holdService,
-                              PatronAccountService patronAccountService,
-                              BookService bookService) {
-        this.bookCopyService = bookCopyService;
-        this.holdService = holdService;
-        this.patronAccountService = patronAccountService;
-        this.bookService = bookService;
-    }
 
     @GetMapping("/catalog/book/{id}")
     public String getBookCopies(@PathVariable Long id,

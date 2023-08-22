@@ -3,27 +3,21 @@ package com.example.alleywayalliancelms.service;
 import com.example.alleywayalliancelms.model.BookCopy;
 import com.example.alleywayalliancelms.model.Hold;
 import com.example.alleywayalliancelms.model.PatronAccount;
-import com.example.alleywayalliancelms.repository.BookCopyRepository;
 import com.example.alleywayalliancelms.repository.HoldRepository;
-import com.example.alleywayalliancelms.repository.PatronAccountRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class HoldService {
-
     private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private final HoldRepository holdRepository;
@@ -36,18 +30,6 @@ public class HoldService {
 
     private final NotificationService notificationService;
 
-    @Autowired
-    public HoldService(HoldRepository holdRepository,
-                       BookCopyService bookCopyService,
-                       CheckoutService checkoutService,
-                       PatronAccountService patronAccountService,
-                       NotificationService notificationService) {
-        this.holdRepository = holdRepository;
-        this.bookCopyService = bookCopyService;
-        this.checkoutService = checkoutService;
-        this.patronAccountService = patronAccountService;
-        this.notificationService = notificationService;
-    }
 
     public boolean saveHold(Hold hold, Long CopyId, String patronEmail) {
         LocalDateTime date = LocalDateTime.now();

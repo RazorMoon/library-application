@@ -2,6 +2,7 @@ package com.example.alleywayalliancelms.controller;
 
 import com.example.alleywayalliancelms.model.PatronAccount;
 import com.example.alleywayalliancelms.service.PatronAccountService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -14,18 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
-
+@RequiredArgsConstructor
 @Slf4j
 @Controller
 @RequestMapping("/")
 public class PatronAccountController {
 
     private final PatronAccountService patronAccountService;
-
-    @Autowired
-    public PatronAccountController(PatronAccountService patronAccountService) {
-        this.patronAccountService = patronAccountService;
-    }
 
     @GetMapping("account/{name}")
     public String getPersonalAccInfo(@PathVariable String name,

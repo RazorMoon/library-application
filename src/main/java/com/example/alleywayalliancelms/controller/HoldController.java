@@ -1,6 +1,7 @@
 package com.example.alleywayalliancelms.controller;
 
 import com.example.alleywayalliancelms.service.HoldService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -8,18 +9,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+@RequiredArgsConstructor
 @Slf4j
 @Controller
 @RequestMapping("/")
 public class HoldController {
 
     public final HoldService holdService;
-
-    @Autowired
-    public HoldController(HoldService holdService) {
-        this.holdService = holdService;
-    }
 
     @GetMapping("hold")
     public String getAccountHoldListPage(Model model,

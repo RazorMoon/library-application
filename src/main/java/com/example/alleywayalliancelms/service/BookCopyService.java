@@ -1,13 +1,12 @@
 package com.example.alleywayalliancelms.service;
 
-import com.example.alleywayalliancelms.exception.BaseException;
 import com.example.alleywayalliancelms.exception.CopyNotFoundException;
 import com.example.alleywayalliancelms.model.BookCopy;
 import com.example.alleywayalliancelms.model.Publisher;
 import com.example.alleywayalliancelms.repository.BookCopyRepository;
 import com.example.alleywayalliancelms.repository.PublisherRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,18 +15,12 @@ import java.util.Optional;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class BookCopyService {
 
     private final BookCopyRepository bookCopyRepository;
 
     private final PublisherRepository publisherRepository;
-
-    @Autowired
-    public BookCopyService(BookCopyRepository bookCopyRepository,
-                           PublisherRepository publisherRepository) {
-        this.bookCopyRepository = bookCopyRepository;
-        this.publisherRepository = publisherRepository;
-    }
 
     public BookCopy checkBookCopyIdForNull(Optional<BookCopy> bookCopyOptional) {
         if (bookCopyOptional.isPresent()) {

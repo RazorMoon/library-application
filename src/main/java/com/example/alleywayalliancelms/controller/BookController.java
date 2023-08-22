@@ -7,6 +7,7 @@ import com.example.alleywayalliancelms.model.Category;
 import com.example.alleywayalliancelms.model.Genre;
 import com.example.alleywayalliancelms.service.BookService;
 import com.example.alleywayalliancelms.service.NotificationService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -20,7 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-
+@RequiredArgsConstructor
 @Controller
 @Slf4j
 @RequestMapping("/catalog")
@@ -30,11 +31,6 @@ public class BookController {
 
     private final NotificationService notificationService;
 
-    @Autowired
-    public BookController(BookService bookService, NotificationService notificationService) {
-        this.bookService = bookService;
-        this.notificationService = notificationService;
-    }
 
     @GetMapping
     public String showCatalogPage(Model model, Authentication authentication) {

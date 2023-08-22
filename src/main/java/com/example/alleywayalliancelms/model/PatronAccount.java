@@ -1,6 +1,6 @@
 package com.example.alleywayalliancelms.model;
 
-import com.example.alleywayalliancelms.generator.MyGenerator;
+import com.example.alleywayalliancelms.generator.SequenceGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +16,6 @@ import javax.validation.constraints.Size;
 import java.util.*;
 
 @Slf4j
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -26,10 +24,10 @@ public class PatronAccount implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "card_seq")
     @GenericGenerator(name = "card_seq",
-            strategy = "com.example.alleywayalliancelms.generator.MyGenerator",
+            strategy = "com.example.alleywayalliancelms.generator.SequenceGenerator",
             parameters = {
-                    @org.hibernate.annotations.Parameter(name = MyGenerator.VALUE_PREFIX_PARAMETER, value = "AAU_"),
-                    @org.hibernate.annotations.Parameter(name = MyGenerator.NUMBER_FORMAT_PARAMETER, value = "%06d")
+                    @org.hibernate.annotations.Parameter(name = SequenceGenerator.VALUE_PREFIX_PARAMETER, value = "AAU_"),
+                    @org.hibernate.annotations.Parameter(name = SequenceGenerator.NUMBER_FORMAT_PARAMETER, value = "%06d")
             }
     )
     @Column(name = "card_number", nullable = false)

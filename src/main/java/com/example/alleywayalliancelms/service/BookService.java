@@ -10,14 +10,16 @@ import com.example.alleywayalliancelms.model.Genre;
 import com.example.alleywayalliancelms.repository.BookRepository;
 import com.example.alleywayalliancelms.repository.CategoryRepository;
 import com.example.alleywayalliancelms.repository.GenreRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class BookService {
     private final BookRepository bookRepository;
 
@@ -27,16 +29,6 @@ public class BookService {
 
     private final AuthorService authorService;
 
-    @Autowired
-    public BookService(BookRepository bookRepository,
-                       CategoryRepository categoryRepository,
-                       GenreRepository genreRepository,
-                       AuthorService authorService) {
-        this.bookRepository = bookRepository;
-        this.categoryRepository = categoryRepository;
-        this.genreRepository = genreRepository;
-        this.authorService = authorService;
-    }
 
     private Book checkIfBookIsPresent(Optional<Book> book) {
         if (book.isPresent()) {
@@ -74,6 +66,7 @@ public class BookService {
 
         bookRepository.save(book);
     }
+
 
     public boolean deleteBook(Long bookId) {
         if (bookId != null) {
